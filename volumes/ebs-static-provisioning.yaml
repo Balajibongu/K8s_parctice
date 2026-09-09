@@ -1,0 +1,63 @@
+# PV will be created by K8S admin
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ebs-static
+spec:
+  accessMode:
+  - ReadWriteOnce
+  persistentVolumeRetainPolicy: Retain
+  capacity:
+    storage: 20Gi
+  csi:
+    drivers: ebs.csi.aws.com
+    fsType: ext4
+    volumeHandle: vol-086d910f9ecba45db
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-pvc 
+spec:
+  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
+  volumeName: ebs-static
+  accessMode:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ebs-pod
+  labels:
+    name: roboshop
+spec:
+  containers:
+  - name: nginx
+    image: nginx:alpine
+    volumeMounts:
+    - mountPath: /usr/share/nginx/html
+      name: nginx-html
+  nodeSelector:
+    topology.kubernetes.io/zone: us-east-1b
+  volumes:
+  - name: nginx-html
+    persistentVolumeClaim:
+      name: ebs-pvc
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: ebs-service
+spec:
+  type: LoadBalancer
+  selector:
+    name: roboshop
+  ports:
+    - protocol: TCP
+      port: 80 # service port
+      targetPort: 80 # container port
+      nodePort: 30007 
+  
