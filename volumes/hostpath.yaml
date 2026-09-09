@@ -1,51 +1,58 @@
 apiVersion: apps/v1
 kind: DaemonSet
-metadata: 
+
+metadata:
   name: hostpath
-  labels: 
+  labels:
     name: roboshop
     env: dev
+
 spec:
-  
-  repilcas: 1
   selector:
-    matchLabels: 
-        name: roboshop
-        env: dev
+    matchLabels:
+      name: roboshop
+      env: dev
+
   template:
     metadata:
       labels:
         name: roboshop
         env: dev
+
     spec:
       tolerations:
-        # these tolerations are to have the daemonset runnable on control plane nodes
-        # remove them if your control plane nodes should not run pods
+        # These tolerations allow the DaemonSet to run on control-plane nodes
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
           effect: NoSchedule
+
         - key: node-role.kubernetes.io/master
           operator: Exists
           effect: NoSchedule
-      containers:
-      - name: nginx
-        image: nginx:alpine
-        ports:
-        - containerPort: 80
-        resources:
-          limit:
-            cpu: 50m
-            memory: 100Mi
-          requestes:
-            cpu: 50m
-            memory: 100Mi
-        volumeMount:
-        - mountPath: /var/log
-          name: nginx-log
-          readOnly: true
-      terminationGracePeriodSeconds: 30
-    volumes:
-    - name: nginx-log
-      hostPath:
-        path: /var/log
 
+      terminationGracePeriodSeconds: 30
+
+      containers:
+        - name: nginx
+          image: nginx:alpine
+
+          ports:
+            - containerPort: 80
+
+          resources:
+            limits:
+              cpu: 50m
+              memory: 100Mi
+            requests:
+              cpu: 50m
+              memory: 100Mi
+
+          volumeMounts:
+            - mountPath: /var/log
+              name: nginx-log
+              readOnly: true
+
+      volumes:
+        - name: nginx-log
+          hostPath:
+            path: /var/log
