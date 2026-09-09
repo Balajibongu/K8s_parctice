@@ -51,7 +51,6 @@ spec:
           volumeMounts:
             - mountPath: /var/log
               name: nginx-log
-              readOnly: true
 
       volumes:
         - name: nginx-log
