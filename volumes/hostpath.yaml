@@ -30,22 +30,22 @@ spec:
       containers:
       - name: nginx
         image: nginx:alpine
-      ports:
-      - containerPort: 80
-      resources:
-        limit:
-          cpu: 50m
-          memory: 100Mi
-        requestes:
-          cpu: 50m
-          memory: 100Mi
-      volumeMount:
-      - mountPath: /var/log
-        name: nginx-log
-        readOnly: true
+        ports:
+        - containerPort: 80
+        resources:
+          limit:
+            cpu: 50m
+            memory: 100Mi
+          requestes:
+            cpu: 50m
+            memory: 100Mi
+        volumeMount:
+        - mountPath: /var/log
+          name: nginx-log
+          readOnly: true
       terminationGracePeriodSeconds: 30
-  volumes:
-  - name: nginx-log
-    hostPath:
-      path: /var/log
+    volumes:
+    - name: nginx-log
+      hostPath:
+        path: /var/log
 
