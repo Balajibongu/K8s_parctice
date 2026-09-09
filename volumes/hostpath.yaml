@@ -56,3 +56,4 @@ spec:
         - name: nginx-log
           hostPath:
             path: /var/log
+            type: DirectoryOrCreate
