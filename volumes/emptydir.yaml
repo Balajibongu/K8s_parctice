@@ -10,13 +10,13 @@ spec:
   containers:
   - name: nginx
     image: nginx:alpine
-    volumeMount:
+    volumeMounts:
     - mountPath: /var/log/nginx
       name: nginx-log
   - name: almalinux
     image: almalinux:8
     command: ["sleep","1000"] 
-    volumeMount:
+    volumeMounts:
     - mountPath: /sample/nginx
       name: nginx-log
       readOnly: true
