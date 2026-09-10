@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: StorageClass
+metadata:
+  name: efs-sc
+reclaimPolicy: Retain
+provisioner: efs.csi.aws.com
+parameters:
+  directoryPerms: "700"
+  provisioningMode: efs-ap
+  basePath: "/roboshop" 
+  fileSystemId: 

@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: efs-pvc 
+spec:
+  storageClassName: "efs-sc"
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: efs-pod
+  labels:
+    name: roboshop
+spec:
+  containers:
+  - name: nginx
+    image: nginx:alpine
+    volumeMounts:
+    - name: nginx-pvc
+      mountPath: /usr/share/nginx/html
+  voulumes:
+  - name: nginx-pvc
+    persistentVolumeClaim:
+      claimName: efs-pvc
+---
+apiVersion: v1
+kind: service
+metadata:
+  name: pod-service
+spec: 
+  type: LoadBalancer
+  selector:
+    name: roboshop
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30007
