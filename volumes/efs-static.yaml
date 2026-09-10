@@ -48,7 +48,7 @@ spec:
       claimName: efs-pvc 
 ---
 apiVersion: v1
-kind: service
+kind: Service
 metadata:
   name: pod-service
 spec: 
