@@ -42,7 +42,7 @@ spec:
       mountPath: /usr/share/nginx/html
   nodeSelector:
     topology.kubernetes.io/zone: us-east-1b
-  voulumes:
+  volumes:
   - name: nginx-efs
     persistentVolumeClaim:
       claimName: efs-pvc 
