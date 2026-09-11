@@ -1,43 +1,44 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata: 
-  name: deployment
+  name: statefulset
   labels:
     names: roboshop
     env: dev
-    language: yaml
-    purpose: deployment
 spec:
   replicas: 2
   selector:
     matchLabels:
       names: roboshop
       env: dev
-      language: yaml
-      purpose: deployment
   template:
     metadata:
       labels:
         names: roboshop
         env: dev
-        language: yaml
-        purpose: deployment
     spec:
       containers:
       - name: nginx
         image: nginx:trixie-perl
+      volumeMounts:
+      - mountPath: /usr/share/nginx/html
+        name: nginx-html
+    nodeSelector:
+      topology.kubernetes.io/zone: us-east-1c
+  volumes:
+  - name: nginx-html
+    persistentVolumeClaim:
+      claimName: ebs-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: deployment
+  name: statefulset
 spec:
-  type: LoadBalancer
+  ClusterIP: none
   selector:
     names: roboshop
     env: dev
-    language: yaml
-    purpose: deployment
   ports:
   - protocol: TCP
     port: 80
@@ -46,14 +47,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: deployment
+  name: statefulset
 spec:
   type: ClusterIP
   selector:
     names: roboshop
     env: dev
-    language: yaml
-    purpose: deployment
   ports:
   - protocol: TCP
     port: 80
