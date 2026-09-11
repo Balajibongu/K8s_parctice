@@ -30,9 +30,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: headless
+  name: clusterip
 spec:
-  clusterIP: none
+  type: clusterIP
   selector:
     names: roboshop
     env: dev
@@ -46,9 +46,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: clusterip
+  name: headless
 spec:
-  type: clusterIP
+  clusterIP: None
   selector:
     names: roboshop
     env: dev

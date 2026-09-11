@@ -6,6 +6,7 @@ metadata:
     names: roboshop
     env: dev
 spec:
+  serviceName: "headless"
   replicas: 2
   selector:
     matchLabels:
@@ -20,22 +21,27 @@ spec:
       containers:
       - name: nginx
         image: nginx:trixie-perl
-      volumeMounts:
-      - mountPath: /usr/share/nginx/html
-        name: nginx-html
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: nginx-html
     nodeSelector:
       topology.kubernetes.io/zone: us-east-1c
-  volumes:
-  - name: nginx-html
-    persistentVolumeClaim:
-      claimName: ebs-pvc
+  volumeClaimTemplates:
+  - metadata:
+      name: nginx-html
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "ebs-sc"
+      resources:
+        requests:
+          storage: 1Gi
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: headless
 spec:
-  clusterIP: none
+  clusterIP: None
   selector:
     names: roboshop
     env: dev
