@@ -31,7 +31,7 @@ spec:
         volumeMounts:
         - mountPath: /usr/share/nginx/html
           name: nginx-html
-    nodeSelector:
+  nodeSelector:
       topology.kubernetes.io/zone: us-east-1c
   volumeClaimTemplates:
   - metadata:
