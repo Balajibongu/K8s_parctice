@@ -28,10 +28,10 @@ spec:
         image: nginx:trixie-perl
         resources:
           requests:
-            cpu: "150mm"
+            cpu: "150m"
             memory: "256Mi"
           limits:
-            cpu: "200mm"
+            cpu: "200m"
             memory: "256Mi"
 ---
 apiVersion: v1
