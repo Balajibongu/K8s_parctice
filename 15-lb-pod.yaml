@@ -8,7 +8,7 @@ spec:
     names: roboshop
     env: dev
     language: yaml
-    cpurpose: loadbalancer
+    purpose: loadbalancer
   ports:
   - protocol: TCP
     port: 80 # service port
