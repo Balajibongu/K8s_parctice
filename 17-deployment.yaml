@@ -26,22 +26,22 @@ spec:
       containers:
       - name: nginx
         image: nginx
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: deployment
-# spec:
-#   type: LoadBalancer
-#   selector:
-#     names: roboshop
-#     env: dev
-#     language: yaml
-#     purpose: deployment
-#   ports:
-#   - protocol: TCP
-#     port: 80
-#     targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: deployment
+spec:
+  type: LoadBalancer
+  selector:
+    name: roboshop
+    env: dev
+    language: yaml
+    purpose: deployment
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
 # ---
 # apiVersion: v1
 # kind: Service
@@ -50,7 +50,7 @@ spec:
 # spec:
 #   type: ClusterIP
 #   selector:
-#     names: roboshop
+#     name: roboshop
 #     env: dev
 #     language: yaml
 #     purpose: deployment
